@@ -1,3 +1,4 @@
+// app.js
 import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
@@ -15,53 +16,34 @@ import cookieParser from 'cookie-parser';
 dotenv.config();
 
 const app = express();
-
-// Middlewares
 app.use(cookieParser());
 
+// ⭐ FIXED CORS (LOCALHOST + VERCEL allowed)
 app.use(
   cors({
     origin: [
-      'http://localhost:3000',
-      'http://localhost:5001',
-      'http://localhost:5002',
-      'http://localhost:3001',
-      'http://localhost:3002',
-      'http://localhost:3012',
-      'http://localhost:3001',
-      'http://localhost:5173',
-      'https://058wb61p-8080.inc1.devtunnels.ms/',
-      'https://localhost:3000',
+      "http://localhost:3000",
+      "http://localhost:5000",
+      "http://localhost:5001",
+      "http://localhost:5002",
+      "http://localhost:5173",
+      "http://127.0.0.1:3000",
+      "http://127.0.0.1:5173",
+      "https://your-vercel-frontend.vercel.app"
     ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
 app.use(express.json());
+app.use(morgan("dev"));
 
-// Custom Morgan Logger
-const customMorganFormat = (tokens, req, res) => {
-  const status = tokens.status(req, res);
-  const statusColor =
-    status >= 500
-      ? chalk.red
-      : status >= 400
-      ? chalk.yellow
-      : status >= 300
-      ? chalk.cyan
-      : status >= 200
-      ? chalk.green
-      : chalk.white;
-
-  return [
-    chalk.gray(tokens.method(req, res)),
-    chalk.white(tokens.url(req, res)),
-    statusColor(status),
-    chalk.gray(tokens['response-time'](req, res) + ' ms'),
-  ].join(' ');
-};
-
-app.use(morgan(customMorganFormat));
+// ⭐ Root Route — Fix for "Cannot GET /"
+app.get("/", (req, res) => {
+  res.json({ success: true, message: "Backend running on Vercel" });
+});
 
 // ROUTES
 app.use('/api/user/', userAuthRoutes);
@@ -71,5 +53,4 @@ app.use('/api/admin', adminCourseRoutes);
 app.use('/api/admin', adminDataRoutes);
 app.use('/api/payments/', paymentRoutes);
 
-// Export app for server.js or index.js
 export default app;
