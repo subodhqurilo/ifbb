@@ -29,7 +29,7 @@ app.use(
       "http://localhost:5173",
       "http://127.0.0.1:3000",
       "http://127.0.0.1:5173",
-      "https://your-vercel-frontend.vercel.app"
+      "https://ifbb-a0wz9i3gj-qurilos-projects.vercel.app"
     ],
     credentials: true,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
