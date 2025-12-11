@@ -67,7 +67,7 @@ const CourseSchema = new Schema(
       // validate: [(arr) => arr.length > 0, 'At least one module is required'],
     },
     durationToComplete: {
-      type: Number,
+      type: String,
       required: [true, 'Duration to complete is required'],
       min: [10, 'Duration must be at least 10 minutes'],
     },

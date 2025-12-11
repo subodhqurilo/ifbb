@@ -14,10 +14,12 @@ const createAdminAuthTokenAndSetCookie = async (userId, email, response) => {
     .setExpirationTime('3d')
     .sign(secret);
 
+  const isLocalhost = process.env.NODE_ENV !== "production";
+
   response.cookie('admin-auth-token', token, {
     httpOnly: true,
-    secure: true,      // ALWAYS TRUE for cross-origin
-    sameSite: "None",  // ALWAYS None for cross-origin
+    secure: !isLocalhost,        // localhost → false, vercel → true
+    sameSite: isLocalhost ? "Lax" : "None",  // localhost → Lax, vercel → None
     maxAge: 3 * 24 * 60 * 60 * 1000,
     path: '/',
   });
