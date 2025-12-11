@@ -1,29 +1,51 @@
-// index.js
-import app from "./app.js";
-import dbConnect from "./utils/dbConnection.js";
-import chalk from "chalk";
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import morgan from 'morgan';
+import chalk from 'chalk';
+import dbConnect from './utils/dbConnection.js';
+import userAuthRoutes from './routes/user/userAuthRoutes.js';
+import adminAuthRoutes from './routes/admin/adminAuthRoutes.js';
+import userDataRoutes from './routes/user/userDataRoutes.js';
+import adminCourseRoutes from './routes/admin/adminCourseRoutes.js';
+import adminDataRoutes from './routes/admin/adminDataRoutes.js';
+import paymentRoutes from './routes/payments/paymentRoutes.js';
+import cookieParser from 'cookie-parser';
+import userAuthMiddleware from './middleware/userAuthMiddleware.js';
+import adminAuthMiddleware from './middleware/adminAuthMiddleware.js';
 
-dbConnect();
+dotenv.config();
 
-// ⭐ Vercel serverless CORS FIX
-export default function handler(req, res) {
+const app = express();
 
-  res.setHeader("Access-Control-Allow-Origin", req.headers.origin || "*");
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.setHeader("Access-Control-Allow-Methods", "GET,POST,PUT,PATCH,DELETE,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+// ⭐ MUST USE Render PORT
+const PORT = process.env.PORT || 5003;
 
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
+// Middlewares
+app.use(cookieParser());
 
-  return app(req, res);
-}
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+  })
+);
 
-// ⭐ Local development mode (localhost backend)
-if (process.env.NODE_ENV !== "production") {
-  const PORT = process.env.PORT || 5003;
+app.use(express.json());
+
+app.use(morgan("dev"));
+
+// Routes
+app.use('/api/user/', userAuthRoutes);
+app.use('/api/user/', userDataRoutes);
+app.use('/api/admin/', adminAuthRoutes);
+app.use('/api/admin', adminAuthMiddleware, adminCourseRoutes);
+app.use('/api/admin', adminAuthMiddleware, adminDataRoutes);
+app.use('/api/payments/', paymentRoutes);
+
+// ⭐ CONNECT DB + START SERVER
+dbConnect().then(() => {
   app.listen(PORT, () => {
-    console.log(chalk.blueBright(`Local backend running on port ${PORT}`));
+    console.log(chalk.green(`🚀 Server started on PORT: ${PORT}`));
   });
-}
+});
