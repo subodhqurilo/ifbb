@@ -47,8 +47,8 @@ app.use(morgan("dev"));
 app.use('/api/user/', userAuthRoutes);
 app.use('/api/user/', userDataRoutes);
 app.use('/api/admin/', adminAuthRoutes);
-app.use('/api/admin', adminAuthMiddleware, adminCourseRoutes);
-app.use('/api/admin', adminAuthMiddleware, adminDataRoutes);
+app.use('/api/admin',  adminCourseRoutes);
+app.use('/api/admin',  adminDataRoutes);
 app.use('/api/payments/', paymentRoutes);
 app.get("/", (req, res) => {
   res.send("IFBB Backend Running Successfully 🚀");
