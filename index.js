@@ -18,43 +18,49 @@ dotenv.config();
 
 const app = express();
 
-// ⭐ MUST USE Render PORT
 const PORT = process.env.PORT || 5003;
 
-// Middlewares
 app.use(cookieParser());
 
 app.use(
   cors({
     origin: [
-      "http://localhost:5002",   // Admin Panel Local
-      "https://ifbb-1.onrender.com", // Example admin domain
+      "http://localhost:5002",
       "http://localhost:5003",
       "http://localhost:3000",
-      "http://localhost:3001"
-
+      "http://localhost:3001",
     ],
     credentials: true,
   })
 );
 
-
 app.use(express.json());
-
 app.use(morgan("dev"));
 
 // Routes
 app.use('/api/user/', userAuthRoutes);
 app.use('/api/user/', userDataRoutes);
+
+// Public admin route (login)
 app.use('/api/admin/', adminAuthRoutes);
-app.use('/api/admin',  adminCourseRoutes);
-app.use('/api/admin',  adminDataRoutes);
+
+// Protected admin routes
+app.use('/api/admin', adminAuthMiddleware, adminCourseRoutes);
+app.use('/api/admin', adminAuthMiddleware, adminDataRoutes);
+
+// Auth check API
+app.get("/api/admin/check-auth", adminAuthMiddleware, (req, res) => {
+  res.status(200).json({ loggedIn: true });
+});
+
 app.use('/api/payments/', paymentRoutes);
+
+// Root
 app.get("/", (req, res) => {
   res.send("IFBB Backend Running Successfully 🚀");
 });
 
-// ⭐ CONNECT DB + START SERVER
+// Start server
 dbConnect().then(() => {
   app.listen(PORT, () => {
     console.log(chalk.green(`🚀 Server started on PORT: ${PORT}`));
