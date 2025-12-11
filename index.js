@@ -26,10 +26,18 @@ app.use(cookieParser());
 
 app.use(
   cors({
-    origin: "*",
+    origin: [
+      "http://localhost:5002",   // Admin Panel Local
+      "https://ifbb-1.onrender.com", // Example admin domain
+      "http://localhost:5003",
+      "http://localhost:3000",
+      "http://localhost:3001"
+
+    ],
     credentials: true,
   })
 );
+
 
 app.use(express.json());
 
@@ -42,6 +50,9 @@ app.use('/api/admin/', adminAuthRoutes);
 app.use('/api/admin', adminAuthMiddleware, adminCourseRoutes);
 app.use('/api/admin', adminAuthMiddleware, adminDataRoutes);
 app.use('/api/payments/', paymentRoutes);
+app.get("/", (req, res) => {
+  res.send("IFBB Backend Running Successfully 🚀");
+});
 
 // ⭐ CONNECT DB + START SERVER
 dbConnect().then(() => {
