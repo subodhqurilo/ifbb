@@ -8,25 +8,60 @@ import { deleteCourseController } from '../../controllers/admin/course/deleteCou
 import { editCourseController } from '../../controllers/admin/course/editCourseController.js';
 import adminAuthMiddlware from '../../middleware/adminAuthMiddleware.js';
 import { deleteModuleController } from '../../controllers/admin/course/deleteModuleController.js';
-// import { adminCreateCourseValidator } from '../../validators/adminCreateCourseValidator.js';
+import { editModuleController } from '../../controllers/admin/course/editModuleController.js';
+
 const router = express.Router();
 
-router.post('/create-course', getUploader('memory').single('thumbnail'), addCourseController);
+router.post(
+  '/create-course',
+  getUploader('memory').single('thumbnail'),
+  addCourseController
+);
+
 router.post(
   '/add-module-to-course/:courseId',
-  getUploader('disk').single('asset'),
   adminAuthMiddlware,
+  getUploader('disk').single('asset'),
   addModuleController
 );
 
+router.post(
+  '/change-course-visibility/:courseId',
+  adminAuthMiddlware,
+  changeCourseVisibility
+);
 
-router.post('/change-course-visibility/:courseId', adminAuthMiddlware, changeCourseVisibility);
+router.get(
+  '/get-course/:courseId',
+  adminAuthMiddlware,
+  getOneCourseController
+);
 
-router.get('/get-course/:courseId', adminAuthMiddlware, getOneCourseController);
+router.delete(
+  '/delete-course/:courseId',
+  adminAuthMiddlware,
+  deleteCourseController
+);
 
-router.delete('/delete-course/:courseId', adminAuthMiddlware, deleteCourseController);
+router.delete(
+  '/delete-module/:moduleId',
+  adminAuthMiddlware,
+  deleteModuleController
+);
 
-router.delete('/delete-module/:moduleId', adminAuthMiddlware, deleteModuleController);
+router.patch(
+  "/edit-course/:courseId",
+  adminAuthMiddlware,
+  getUploader("disk").single("thumbnail"),
+  editCourseController
+);
 
-router.patch('/edit-course/:courseId', adminAuthMiddlware, editCourseController);
+
+router.patch(
+  '/edit-module/:courseId/:moduleId',
+  adminAuthMiddlware,
+  getUploader('disk').single('file'),
+  editModuleController
+);
+
 export default router;
