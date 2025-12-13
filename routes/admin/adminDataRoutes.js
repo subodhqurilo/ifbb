@@ -5,7 +5,7 @@ import adminAuthMiddleware from '../../middleware/adminAuthMiddleware.js';
 import getAllUsersController from '../../controllers/admin/user/getAllUsersController.js';
 import banUnbanUserController from '../../controllers/admin/user/banUnbanUserController.js';
 import { adminAnalyticsController } from '../../controllers/admin/analytics/adminAnalyticsController.js';
-router.get('/get-all-courses', adminAuthMiddleware, getAllCourseController);
+// router.get('/get-all-courses', adminAuthMiddleware, getAllCourseController);
 
 router.get('/get-all-courses', adminAuthMiddleware, getAllUsersController);
 

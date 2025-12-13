@@ -29,6 +29,7 @@ app.use(
       "http://localhost:5003",
       "http://localhost:3000",
       "http://localhost:3001",
+      "https://ifbb-1.onrender.com"
     ],
     credentials: true,
   })
