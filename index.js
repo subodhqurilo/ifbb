@@ -15,6 +15,8 @@ import userAuthMiddleware from './middleware/userAuthMiddleware.js';
 import adminAuthMiddleware from './middleware/adminAuthMiddleware.js';
 import adminNewsRoutes from "./routes/admin/adminNewsRoutes.js";
 import newsRoutes from "./routes/common/newsRoutes.js";
+import courseInquiryRoutes from "./routes/common/courseInquiryRoutes.js";
+import adminInquiryRoutes from "./routes/admin/adminInquiryRoutes.js";
 
 dotenv.config();
 
@@ -53,7 +55,12 @@ app.use('/api/admin',  adminCourseRoutes);
 app.use('/api/admin',  adminDataRoutes);
 app.use('/api/payments/', paymentRoutes);
 app.use("/api/admin", adminNewsRoutes); // 🔐 admin
-app.use("/api", newsRoutes);             // 🌍 public
+app.use("/api", newsRoutes);  
+app.use("/api", courseInquiryRoutes);
+app.use("/api/admin", adminInquiryRoutes);
+
+           
+app.use("/uploads", express.static("uploads"));
 
 app.get("/", (req, res) => {
   res.send("IFBB Backend Running Successfully 🚀");

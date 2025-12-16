@@ -10,6 +10,7 @@ import { adminLoginValidator } from "../../validators/adminLoginValidator.js";
 import uploadAffiliationController from "../../controllers/admin/affiliation/uploadAffiliationController.js";
 import { getUploader } from "../../utils/multer.js";
 import getAffiliationsController from "../../controllers/admin/affiliation/getAffiliationsController.js";
+import deleteAffiliationController from "../../controllers/admin/affiliation/deleteAffiliationController.js";
 
 import adminAuthMiddleware from "../../middleware/adminAuthMiddleware.js";
 
@@ -30,6 +31,11 @@ router.post(
   uploadAffiliationController
 );
 router.get("/affiliations", getAffiliationsController);
+router.delete(
+  "/affiliation/:id",
+  adminAuthMiddleware,
+  deleteAffiliationController
+);
 
 
 export default router;
