@@ -9,6 +9,8 @@ import { adminLoginValidator } from "../../validators/adminLoginValidator.js";
 
 import uploadAffiliationController from "../../controllers/admin/affiliation/uploadAffiliationController.js";
 import { getUploader } from "../../utils/multer.js";
+import getAffiliationsController from "../../controllers/admin/affiliation/getAffiliationsController.js";
+
 import adminAuthMiddleware from "../../middleware/adminAuthMiddleware.js";
 
 const router = express.Router();
@@ -27,5 +29,7 @@ router.post(
   upload.single("image"),     // field = image
   uploadAffiliationController
 );
+router.get("/affiliations", getAffiliationsController);
+
 
 export default router;

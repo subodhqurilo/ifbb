@@ -7,7 +7,7 @@ import banUnbanUserController from '../../controllers/admin/user/banUnbanUserCon
 import { adminAnalyticsController } from '../../controllers/admin/analytics/adminAnalyticsController.js';
 // router.get('/get-all-courses', adminAuthMiddleware, getAllCourseController);
 
-router.get('/get-all-courses', adminAuthMiddleware, getAllUsersController);
+router.get('/get-all-courses', adminAuthMiddleware, getAllCourseController);
 
 // For Admin Control Over User
 router.get('/get-all-users', adminAuthMiddleware, getAllUsersController);

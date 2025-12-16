@@ -13,55 +13,53 @@ import paymentRoutes from './routes/payments/paymentRoutes.js';
 import cookieParser from 'cookie-parser';
 import userAuthMiddleware from './middleware/userAuthMiddleware.js';
 import adminAuthMiddleware from './middleware/adminAuthMiddleware.js';
+import adminNewsRoutes from "./routes/admin/adminNewsRoutes.js";
+import newsRoutes from "./routes/common/newsRoutes.js";
 
 dotenv.config();
 
 const app = express();
 
+// ⭐ MUST USE Render PORT
 const PORT = process.env.PORT || 5003;
 
+// Middlewares
 app.use(cookieParser());
 
 app.use(
   cors({
     origin: [
-      "http://localhost:5002",
+      "http://localhost:5002",   // Admin Panel Local
+      "https://ifbb-1.onrender.com", // Example admin domain
       "http://localhost:5003",
       "http://localhost:3000",
-      "http://localhost:3001",
-      "https://ifbb-1.onrender.com"
+      "http://localhost:3001"
+
     ],
     credentials: true,
   })
 );
 
+
 app.use(express.json());
+
 app.use(morgan("dev"));
 
 // Routes
 app.use('/api/user/', userAuthRoutes);
 app.use('/api/user/', userDataRoutes);
-
-// Public admin route (login)
 app.use('/api/admin/', adminAuthRoutes);
-
-// Protected admin routes
-app.use('/api/admin', adminAuthMiddleware, adminCourseRoutes);
-app.use('/api/admin', adminAuthMiddleware, adminDataRoutes);
-
-// Auth check API
-app.get("/api/admin/check-auth", adminAuthMiddleware, (req, res) => {
-  res.status(200).json({ loggedIn: true });
-});
-
+app.use('/api/admin',  adminCourseRoutes);
+app.use('/api/admin',  adminDataRoutes);
 app.use('/api/payments/', paymentRoutes);
+app.use("/api/admin", adminNewsRoutes); // 🔐 admin
+app.use("/api", newsRoutes);             // 🌍 public
 
-// Root
 app.get("/", (req, res) => {
   res.send("IFBB Backend Running Successfully 🚀");
 });
 
-// Start server
+// ⭐ CONNECT DB + START SERVER
 dbConnect().then(() => {
   app.listen(PORT, () => {
     console.log(chalk.green(`🚀 Server started on PORT: ${PORT}`));
