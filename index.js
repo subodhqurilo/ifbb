@@ -37,7 +37,9 @@ app.use(
       "https://ifbb-1.onrender.com", // Example admin domain
       "http://localhost:5003",
       "http://localhost:3000",
-      "http://localhost:3001"
+      "http://localhost:3001",
+      "http://localhost:5001",
+      
 
     ],
     credentials: true,
