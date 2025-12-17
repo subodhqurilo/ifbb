@@ -17,6 +17,8 @@ import adminNewsRoutes from "./routes/admin/adminNewsRoutes.js";
 import newsRoutes from "./routes/common/newsRoutes.js";
 import courseInquiryRoutes from "./routes/common/courseInquiryRoutes.js";
 import adminInquiryRoutes from "./routes/admin/adminInquiryRoutes.js";
+import adminCertificateRoutes from "./routes/admin/adminCertificateRoutes.js";
+import certificateRoutes from "./routes/common/certificateRoutes.js";
 
 dotenv.config();
 
@@ -58,6 +60,8 @@ app.use("/api/admin", adminNewsRoutes); // 🔐 admin
 app.use("/api", newsRoutes);  
 app.use("/api", courseInquiryRoutes);
 app.use("/api/admin", adminInquiryRoutes);
+app.use("/api/admin", adminCertificateRoutes);
+app.use("/api", certificateRoutes);
 
            
 app.use("/uploads", express.static("uploads"));
