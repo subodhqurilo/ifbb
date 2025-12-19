@@ -19,6 +19,8 @@ import courseInquiryRoutes from "./routes/common/courseInquiryRoutes.js";
 import adminInquiryRoutes from "./routes/admin/adminInquiryRoutes.js";
 import adminCertificateRoutes from "./routes/admin/adminCertificateRoutes.js";
 import certificateRoutes from "./routes/common/certificateRoutes.js";
+import adminGalleryRoutes from './routes/admin/galleryRoutes.js';
+import commonGalleryRoutes from './routes/common/galleryRoutes.js';
 
 dotenv.config();
 
@@ -39,6 +41,7 @@ app.use(
       "http://localhost:3000",
       "http://localhost:3001",
       "http://localhost:5001",
+      "https://393rb0pp-5003.inc1.devtunnels.ms"
       
 
     ],
@@ -58,12 +61,14 @@ app.use('/api/admin/', adminAuthRoutes);
 app.use('/api/admin',  adminCourseRoutes);
 app.use('/api/admin',  adminDataRoutes);
 app.use('/api/payments/', paymentRoutes);
-app.use("/api/admin", adminNewsRoutes); // 🔐 admin
+app.use("/api/admin", adminNewsRoutes); 
 app.use("/api", newsRoutes);  
 app.use("/api", courseInquiryRoutes);
 app.use("/api/admin", adminInquiryRoutes);
 app.use("/api/admin", adminCertificateRoutes);
 app.use("/api", certificateRoutes);
+app.use('/api/admin', adminGalleryRoutes);
+app.use('/api', commonGalleryRoutes);
 
            
 app.use("/uploads", express.static("uploads"));
