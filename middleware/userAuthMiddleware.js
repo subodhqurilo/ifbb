@@ -2,13 +2,21 @@ import { jwtVerify } from 'jose';
 
 const userAuthMiddleware = async (req, res, next) => {
   try {
-    const authHeader = req.headers['authorization'];
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      return res.status(401).json({ message: 'Missing or invalid authorization header' });
+    // ✅ Cookie OR Authorization header (both supported)
+    const token =
+      req.cookies?.['user-auth-token'] ||
+      (req.headers.authorization?.startsWith('Bearer ')
+        ? req.headers.authorization.split(' ')[1]
+        : null);
+
+    if (!token) {
+      return res.status(401).json({
+        message: 'Authentication token missing',
+      });
     }
 
-    const token = authHeader.split(' ')[1];
-    const secret = new TextEncoder().encode(process.env.USER_SECRET);
+    // 🔥 SAME secret as login
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
     const { payload } = await jwtVerify(token, secret, {
       issuer: 'iifb',
@@ -22,7 +30,14 @@ const userAuthMiddleware = async (req, res, next) => {
 
     next();
   } catch (err) {
-    return res.status(403).json({ message: 'Invalid or expired token' });
+    console.error('User auth failed:', err.message);
+
+    // optional cleanup
+    res.clearCookie('user-auth-token');
+
+    return res.status(403).json({
+      message: 'Invalid or expired token',
+    });
   }
 };
 

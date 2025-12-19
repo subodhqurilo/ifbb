@@ -10,7 +10,8 @@ const optionalUserAuthMiddleware = async (req, res, next) => {
 
     if (!token) return next();
 
-    const secret = new TextEncoder().encode(process.env.USER_SECRET);
+    // 🔥 SAME SECRET AS LOGIN
+    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
     const { payload } = await jwtVerify(token, secret, {
       issuer: 'iifb',
