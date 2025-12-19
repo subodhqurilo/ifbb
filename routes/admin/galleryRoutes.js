@@ -7,7 +7,6 @@ import deleteGalleryController from "../../controllers/admin/gallery/deleteGalle
 
 const router = express.Router();
 
-// Upload gallery image
 router.post(
   "/gallery",
   adminAuthMiddleware,
@@ -15,7 +14,6 @@ router.post(
   uploadGalleryController
 );
 
-// Delete gallery image
 router.delete(
   "/gallery/:id",
   adminAuthMiddleware,

@@ -1,26 +1,55 @@
 import express from 'express';
 
+// Controllers
 import userPurchasedCoursesController from '../../controllers/user/courses/userPurchasedCoursesController.js';
-
 import { getAllCoursesController } from '../../controllers/user/courses/getAllCoursesController.js';
 import { getUserProfileController } from '../../controllers/user/data/getUserProfileController.js';
 import { getUserOneCourseController } from '../../controllers/user/courses/getUserOneCourseController.js';
+
+// Middlewares
 import optionalAuthMiddleware from '../../middleware/optionalUserAuthMiddleware.js';
 import userAuthMiddleware from '../../middleware/userAuthMiddleware.js';
+
 const router = express.Router();
 
+/**
+ * 🔐 Get logged-in user's purchased courses
+ * Only logged-in users
+ */
 router.get(
-  '/get-user-purchased-course/:userId',
-  // userAuthMiddleware,
-  userPurchasedCoursesController,
+  '/purchased-courses',
+  userAuthMiddleware,
+  userPurchasedCoursesController
 );
 
-router.get('/get-user-profile/:userId', userAuthMiddleware, getUserProfileController);
+/**
+ * 🔐 Get logged-in user's profile
+ * Only logged-in users
+ */
+router.get(
+  '/user-profile',
+  userAuthMiddleware,
+  getUserProfileController
+);
 
-// TODO: Add Optional Auth Middleware Here
-router.get('/get-all-courses', getAllCoursesController);
+/**
+ * 🌍 Public – Get all courses
+ * Guest + logged-in both
+ */
+router.get(
+  '/get-all-courses',
+  getAllCoursesController
+);
 
-// TODO: Add userauthmiddleware here
-router.get('/get-one-course/:courseId', userAuthMiddleware, getUserOneCourseController);
+/**
+ * 🌍 Public + Optional Auth
+ * Guest → limited data (no assetLink)
+ * Logged-in & purchased → full access
+ */
+router.get(
+  '/get-one-course/:courseId',
+  optionalAuthMiddleware,
+  getUserOneCourseController
+);
 
 export default router;

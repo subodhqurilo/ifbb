@@ -2,10 +2,14 @@ import { jwtVerify } from 'jose';
 
 const optionalUserAuthMiddleware = async (req, res, next) => {
   try {
-    const authHeader = req.headers['authorization'];
-    if (!authHeader || !authHeader.startsWith('Bearer ')) return next();
+    const token =
+      req.cookies?.['user-auth-token'] ||
+      (req.headers.authorization?.startsWith('Bearer ')
+        ? req.headers.authorization.split(' ')[1]
+        : null);
 
-    const token = authHeader.split(' ')[1];
+    if (!token) return next();
+
     const secret = new TextEncoder().encode(process.env.USER_SECRET);
 
     const { payload } = await jwtVerify(token, secret, {

@@ -19,8 +19,10 @@ import courseInquiryRoutes from "./routes/common/courseInquiryRoutes.js";
 import adminInquiryRoutes from "./routes/admin/adminInquiryRoutes.js";
 import adminCertificateRoutes from "./routes/admin/adminCertificateRoutes.js";
 import certificateRoutes from "./routes/common/certificateRoutes.js";
-import adminGalleryRoutes from './routes/admin/galleryRoutes.js';
-import commonGalleryRoutes from './routes/common/galleryRoutes.js';
+import adminGalleryRoutes from "./routes/admin/galleryRoutes.js";
+import commonGalleryRoutes from "./routes/common/galleryRoutes.js";
+
+
 
 dotenv.config();
 
@@ -67,8 +69,9 @@ app.use("/api", courseInquiryRoutes);
 app.use("/api/admin", adminInquiryRoutes);
 app.use("/api/admin", adminCertificateRoutes);
 app.use("/api", certificateRoutes);
-app.use('/api/admin', adminGalleryRoutes);
-app.use('/api', commonGalleryRoutes);
+app.use("/api/admin", adminGalleryRoutes);
+app.use("/api", commonGalleryRoutes);
+
 
            
 app.use("/uploads", express.static("uploads"));
