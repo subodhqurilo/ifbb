@@ -17,8 +17,14 @@ const router = express.Router();
  * Only logged-in users
  */
 router.get(
+  '/get-one-course/:courseId',
+  optionalAuthMiddleware,
+  getUserOneCourseController
+);
+
+router.get(
   '/purchased-courses',
-  userAuthMiddleware,
+  optionalAuthMiddleware,
   userPurchasedCoursesController
 );
 
@@ -46,10 +52,5 @@ router.get(
  * Guest → limited data (no assetLink)
  * Logged-in & purchased → full access
  */
-router.get(
-  '/get-one-course/:courseId',
-  optionalAuthMiddleware,
-  getUserOneCourseController
-);
 
 export default router;

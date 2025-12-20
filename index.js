@@ -57,12 +57,12 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // Routes
-app.use('/api/user/', userAuthRoutes);
-app.use('/api/user/', userDataRoutes);
-app.use('/api/admin/', adminAuthRoutes);
+app.use('/api/user', userDataRoutes);
+app.use('/api/user', userAuthRoutes);
+app.use('/api/admin', adminAuthRoutes);
 app.use('/api/admin',  adminCourseRoutes);
 app.use('/api/admin',  adminDataRoutes);
-app.use('/api/payments/', paymentRoutes);
+app.use('/api/payments', paymentRoutes);
 app.use("/api/admin", adminNewsRoutes); 
 app.use("/api", newsRoutes);  
 app.use("/api", courseInquiryRoutes);
