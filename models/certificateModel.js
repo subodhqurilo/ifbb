@@ -5,7 +5,7 @@ const certificateSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      enum: ["coach", "athlete", "judge", "trainer", "other"],
+      enum: ["Trainer","Advance","Master"],
     },
     fileUrl: {
       type: String,
